@@ -5,7 +5,7 @@ const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 
 let userMessage = null;
-const API_KEY = "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";
+const API_KEY = "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";
 const inputInitHeight = chatInput.scrollHeight;
 
 const createChatLi = (message, className) => {
@@ -21,17 +21,17 @@ const createChatLi = (message, className) => {
 };
 
 const generateResponse = (chatElement) => {
-  const API_URL = "https://api.openai.com/v1/chat/completions";
+  const API_URL = "https://platform.openai.com/docs/api-reference/chat/object";
   const messageElement = chatElement.querySelector("p");
 
   const requestOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${API_KEY}`,
+      "Authorization": `Bearer ${API_KEY}`,
     },
     body: JSON.stringify({
-      model: "gpt-3.5-turbo",
+      model: "https://platform.openai.com/docs/api-reference/chat/object#chat/object-model",
       messages: [{ role: "user", content: userMessage }],
     }),
   };
@@ -39,12 +39,11 @@ const generateResponse = (chatElement) => {
   fetch(API_URL, requestOptions)
     .then((res) => res.json())
     .then((data) => {
-      messageElement.textContent = data.choices[0].message.content.trim();
+      messageElement.textContent = data.choices[0].message.content;
     })
     .catch(() => {
       messageElement.classList.add("error");
-      messageElement.textContent =
-        "Oops! Something went wrong. Please try again.";
+      messageElement.textContent = "Oops! Something went wrong. Please try again.";
     })
     .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
 };
